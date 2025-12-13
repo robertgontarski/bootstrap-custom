@@ -1,0 +1,56 @@
+@each $color, $value in $all-colors {
+	.text-bg-#{$color} {
+		color: color-contrast($value);
+		background-color: $value;
+		border: #{$btn-border-width} solid shade-color($value, 20%);
+	}
+
+	.text-bg-outline-#{$color} {
+		color: shade-color($value, 10%);
+		border: #{$btn-border-width} solid tint-color($value, 60%);
+		background-color: tint-color($value, 80%);
+
+		&:is(.force-dark) {
+			color: tint-color($value, 20%);
+			background-color: shade-color($value, 80%);
+			border-color: shade-color($value, 40%);
+		}
+	}
+
+	@include theme(light) {
+		[class*="light:text-bg-#{$color}"] {
+			color: color-contrast($value);
+			background-color: $value;
+			border: #{$btn-border-width} solid shade-color($value, 20%);
+		}
+
+		[class*="light:text-bg-outline-#{$color}"] {
+			color: shade-color($value, 10%);
+			border: #{$btn-border-width} solid tint-color($value, 60%);
+			background-color: tint-color($value, 80%);
+		}
+	}
+
+
+	@include theme(dark) {
+		.text-bg-outline-#{$color} {
+			&:not(.force-light) {
+				color: tint-color($value, 20%);
+				background-color: shade-color($value, 80%);
+				border-color: shade-color($value, 40%);
+			}
+		}
+
+		[class*="dark:text-bg-#{$color}"] {
+			color: color-contrast($value);
+			background-color: $value;
+			border: #{$btn-border-width} solid shade-color($value, 20%);
+		}
+
+		[class*="dark:text-bg-outline-#{$color}"] {
+			color: tint-color($value, 20%);
+			background-color: shade-color($value, 80%);
+			border-color: shade-color($value, 40%);
+		}
+	}
+}

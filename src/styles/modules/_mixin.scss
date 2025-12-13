@@ -1,0 +1,5 @@
+@mixin theme($type: dark) {
+	[data-bs-theme="#{$type}"] {
+		@content;
+	}
+}

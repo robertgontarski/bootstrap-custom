@@ -1,0 +1,21 @@
+@each $breakpoint, $value in $grid-breakpoints {
+	@for $i from 8 through 70 {
+		[class*="fs-[#{$i}px]"] {
+			font-size: #{$i}px;
+		}
+	}
+
+	@each $key, $size in $font-sizes {
+		.fs-#{$breakpoint}-#{$key} {
+			@include media-breakpoint-up($breakpoint) {
+				font-size: $size;
+			}
+		}
+
+		@for $i from 8 through 70 {
+			[class*="fs-#{$breakpoint}-[#{$i}px]"] {
+				font-size: #{$i}px;
+			}
+		}
+	}
+}

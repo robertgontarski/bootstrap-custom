@@ -1,0 +1,43 @@
+@each $color, $value in $all-colors {
+	.alert-#{$color} {
+		color: tint-color($value, 40%);
+		background-color: tint-color($value, 80%);
+		border-color: tint-color($value, 60%);
+
+		a {
+			color: tint-color($value, 40%);
+		}
+	}
+
+	@include theme(light) {
+		[class*="light:alert-#{$color}"] {
+			color: tint-color($value, 40%);
+			background-color: tint-color($value, 80%);
+			border-color: tint-color($value, 60%);
+
+			a {
+				color: tint-color($value, 40%);
+			}
+		}
+	}
+
+	@include theme(dark) {
+		.alert-#{$color} {
+			&:not(.force-light) {
+				color: tint-color($value, 20%);
+				background-color: shade-color($value, 80%);
+				border-color: shade-color($value, 40%);
+			}
+		}
+
+		[class*="dark:alert-#{$color}"] {
+			color: tint-color($value, 20%);
+			background-color: shade-color($value, 80%);
+			border-color: shade-color($value, 40%);;
+
+			a {
+				color: tint-color($value, 40%);
+			}
+		}
+	}
+}

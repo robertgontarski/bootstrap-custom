@@ -1,0 +1,31 @@
+$shadow-utilities: (
+	"shadow": (
+		property: box-shadow,
+		class: shadow,
+		values: (
+			null: $box-shadow,
+			sm: $box-shadow-sm,
+			lg: $box-shadow-lg,
+			none: none
+		)
+	),
+);
+
+@each $color, $value in $all-colors {
+	.shadow-#{$color} {
+		box-shadow: 0 0.5rem 1rem rgba($value, 0.15) !important;
+	}
+
+	.shadow-sm-#{$color} {
+		box-shadow: 0 0.125rem 0.25rem rgba($value, 0.075) !important;
+	}
+
+	.shadow-lg-#{$color} {
+		box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
+	}
+}
+
+$utilities: map-merge(
+		$utilities,
+		$shadow-utilities
+);

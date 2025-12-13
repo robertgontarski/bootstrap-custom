@@ -1,0 +1,29 @@
+@mixin generateLink($color, $value) {
+	color: tint-color($value, 40%);
+	text-decoration-color: tint-color($value, 40%);
+
+	&:hover,
+	&:focus {
+		color: tint-color($value, 20%);
+		text-decoration-color: tint-color($value, 20%);
+	}
+}
+
+@each $color, $value in $all-colors {
+	.link-#{$color} {
+		@include generateLink($color, $value);
+	}
+
+	@include theme(light) {
+		[class*="light:link-#{$color}"] {
+			@include generateLink($color, $value);
+		}
+	}
+
+
+	@include theme(dark) {
+		[class*="dark:link-#{$color}"] {
+			@include generateLink($color, $value);
+		}
+	}
+}

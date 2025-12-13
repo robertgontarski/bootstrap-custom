@@ -1,0 +1,17 @@
+@each $color, $value in $all-colors {
+	.text-#{$color} {
+		color: $value;
+	}
+
+	@include theme(light) {
+		[class*="light:text-#{$color}"] {
+			color: $value;
+		}
+	}
+
+	@include theme(dark) {
+		[class*="dark:text-#{$color}"] {
+			color: $value;
+		}
+	}
+}

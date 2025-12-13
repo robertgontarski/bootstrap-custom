@@ -1,0 +1,38 @@
+$border-side: (
+	top: top,
+	end: right,
+	bottom: bottom,
+	start: left
+);
+
+@each $color, $value in $all-colors {
+	@each $side, $type in $border-side {
+		.border-#{$side}-#{$color} {
+			border-#{$type}-color: $value !important;
+		}
+	}
+
+	@include theme(light) {
+		[class*="light:border-#{$color}"] {
+			border-color: $value !important;
+		}
+
+		@each $side, $type in $border-side {
+			[class*="light:border-#{$side}-#{$color}"] {
+				border-#{$type}-color: $value !important;
+			}
+		}
+	}
+
+	@include theme(dark) {
+		[class*="dark:border-#{$color}"] {
+			border-color: $value !important;
+		}
+
+		@each $side, $type in $border-side {
+			[class*="dark:border-#{$side}-#{$color}"] {
+				border-#{$type}-color: $value !important;
+			}
+		}
+	}
+}
