@@ -1,0 +1,80 @@
+$all-cursors: (
+	auto,
+	default,
+	none,
+	context-menu,
+	help,
+	pointer,
+	progress,
+	wait,
+	cell,
+	crosshair,
+	text,
+	vertical-text,
+	alias,
+	copy,
+	move,
+	no-drop,
+	not-allowed,
+	grab,
+	grabbing,
+	e-resize,
+	n-resize,
+	ne-resize,
+	nw-resize,
+	s-resize,
+	se-resize,
+	sw-resize,
+	w-resize,
+	ew-resize,
+	ns-resize,
+	nesw-resize,
+	nwse-resize,
+	col-resize,
+	row-resize,
+	all-scroll,
+	zoom-in,
+	zoom-out
+);
+
+@each $cursor in $all-cursors {
+	.cursor-#{$cursor} {
+		cursor: $cursor;
+	}
+
+	@include theme(light) {
+		[class*="light:cursor-#{$cursor}"] {
+			cursor: $cursor;
+		}
+	}
+
+	@include theme(dark) {
+		[class*="dark:cursor-#{$cursor}"] {
+			cursor: $cursor;
+		}
+	}
+
+	@each $breakpoint, $value in $grid-breakpoints {
+		.cursor-#{$breakpoint}-#{$cursor} {
+			@include media-breakpoint-up($breakpoint) {
+				cursor: $cursor;
+			}
+		}
+
+		@include theme(light) {
+			[class*="light:cursor-#{$breakpoint}-#{$cursor}"] {
+				@include media-breakpoint-up($breakpoint) {
+					cursor: $cursor;
+				}
+			}
+		}
+
+		@include theme(dark) {
+			[class*="dark:cursor-#{$breakpoint}-#{$cursor}"] {
+				@include media-breakpoint-up($breakpoint) {
+					cursor: $cursor;
+				}
+			}
+		}
+	}
+}

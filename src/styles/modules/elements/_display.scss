@@ -1,0 +1,47 @@
+$all-displays: (
+	none,
+	inline,
+	inline-block,
+	block,
+	grid,
+	inline-grid,
+	flex,
+	inline-flex,
+	table,
+	table-row,
+	table-cell,
+	contents,
+	flow-root
+);
+
+@each $d in $all-displays {
+	@include theme(light) {
+		[class*="light:d-#{$d}"] {
+			display: $d;
+		}
+	}
+
+	@include theme(dark) {
+		[class*="dark:d-#{$d}"] {
+			display: $d;
+		}
+	}
+
+	@each $breakpoint, $value in $grid-breakpoints {
+		@include theme(light) {
+			[class*="light:d-#{$breakpoint}-#{$d}"] {
+				@include media-breakpoint-up($breakpoint) {
+					display: $d;
+				}
+			}
+		}
+
+		@include theme(dark) {
+			[class*="dark:d-#{$breakpoint}-#{$d}"] {
+				@include media-breakpoint-up($breakpoint) {
+					display: $d;
+				}
+			}
+		}
+	}
+}

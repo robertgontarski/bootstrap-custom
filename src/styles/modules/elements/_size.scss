@@ -1,21 +1,69 @@
+$min-size-custom-font: 8;
+$max-size-custom-font: 100;
+
 @each $breakpoint, $value in $grid-breakpoints {
-	@for $i from 8 through 70 {
-		[class*="fs-[#{$i}px]"] {
-			font-size: #{$i}px;
-		}
-	}
+  @for $i from $min-size-custom-font through $max-size-custom-font {
+    [class*="fs-[#{$i}px]"] {
+      font-size: #{$i}px;
+    }
+  }
 
-	@each $key, $size in $font-sizes {
-		.fs-#{$breakpoint}-#{$key} {
-			@include media-breakpoint-up($breakpoint) {
-				font-size: $size;
-			}
-		}
+  @each $key, $size in $font-sizes {
+    .fs-#{$breakpoint}-#{$key} {
+      @include media-breakpoint-up($breakpoint) {
+        font-size: $size;
+      }
+    }
 
-		@for $i from 8 through 70 {
-			[class*="fs-#{$breakpoint}-[#{$i}px]"] {
-				font-size: #{$i}px;
-			}
-		}
-	}
+    @for $i from $min-size-custom-font through $max-size-custom-font {
+      [class*="fs-#{$breakpoint}-[#{$i}px]"] {
+        font-size: #{$i}px;
+      }
+    }
+  }
+
+  @include theme(light) {
+
+    @for $i from $min-size-custom-font through $max-size-custom-font {
+      [class*="light:fs-[#{$i}px]"] {
+        font-size: #{$i}px;
+      }
+    }
+
+    @each $key, $size in $font-sizes {
+      [class*="light:fs-#{$breakpoint}-#{$key}"] {
+        @include media-breakpoint-up($breakpoint) {
+          font-size: $size;
+        }
+      }
+
+      @for $i from $min-size-custom-font through $max-size-custom-font {
+        [class*="light:fs-#{$breakpoint}-[#{$i}px]"] {
+          font-size: #{$i}px;
+        }
+      }
+    }
+  }
+
+  @include theme(dark) {
+    @for $i from $min-size-custom-font through $max-size-custom-font {
+      [class*="dark:fs-[#{$i}px]"] {
+        font-size: #{$i}px;
+      }
+    }
+
+    @each $key, $size in $font-sizes {
+      [class*="dark:fs-#{$breakpoint}-#{$key}"] {
+        @include media-breakpoint-up($breakpoint) {
+          font-size: $size;
+        }
+      }
+
+      @for $i from $min-size-custom-font through $max-size-custom-font {
+        [class*="dark:fs-#{$breakpoint}-[#{$i}px]"] {
+          font-size: #{$i}px;
+        }
+      }
+    }
+  }
 }
