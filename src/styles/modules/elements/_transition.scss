@@ -1,0 +1,55 @@
+$transition-durations: (
+  "transition": .3s,
+  "transition-fast": .15s,
+  "transition-slow": .6s,
+  "transition-none": 0
+);
+
+$transition-easings: (
+  "ease-linear": linear,
+  "ease-in": ease-in,
+  "ease-out": ease-out,
+  "ease-in-out": ease-in-out
+);
+
+@each $class, $duration in $transition-durations {
+  .#{$class} {
+    transition-property: all;
+    transition-duration: $duration;
+    transition-timing-function: ease;
+  }
+
+  @include theme(light) {
+    [class*="light:#{$class}"] {
+      transition-property: all;
+      transition-duration: $duration;
+      transition-timing-function: ease;
+    }
+  }
+
+  @include theme(dark) {
+    [class*="dark:#{$class}"] {
+      transition-property: all;
+      transition-duration: $duration;
+      transition-timing-function: ease;
+    }
+  }
+}
+
+@each $class, $easing in $transition-easings {
+  .#{$class} {
+    transition-timing-function: $easing;
+  }
+
+  @include theme(light) {
+    [class*="light:#{$class}"] {
+      transition-timing-function: $easing;
+    }
+  }
+
+  @include theme(dark) {
+    [class*="dark:#{$class}"] {
+      transition-timing-function: $easing;
+    }
+  }
+}

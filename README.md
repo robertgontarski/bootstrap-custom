@@ -1,5 +1,9 @@
 # Bootstrap more like Tailwind
 
+
+> Documentation on how to use the hover, focus, action parameters, and new transition classes will be added soon.
+
+
 This repository is an overlay for the standard Bootstrap version that adds more powerful utilities for managing colors and styles in elements, inspired by a Tailwind-like approach.
 
 ## List of changes
