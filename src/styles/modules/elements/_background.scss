@@ -3,15 +3,33 @@
 		background-color: $value;
 	}
 
+	@each $state, $pseudo in $states {
+		.#{$state}\:bg-#{$color}#{$pseudo} {
+			background-color: $value;
+		}
+	}
+
 	@include theme(light) {
 		[class*="light:bg-#{$color}"] {
 			background-color: $value;
+		}
+
+		@each $state, $pseudo in $states {
+			[class*="light:#{$state}:bg-#{$color}"]#{$pseudo} {
+				background-color: $value;
+			}
 		}
 	}
 
 	@include theme(dark) {
 		[class*="dark:bg-#{$color}"] {
 			background-color: $value;
+		}
+
+		@each $state, $pseudo in $states {
+			[class*="dark:#{$state}:bg-#{$color}"]#{$pseudo} {
+				background-color: $value;
+			}
 		}
 	}
 }

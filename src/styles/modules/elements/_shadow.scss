@@ -23,6 +23,76 @@ $shadow-utilities: (
 	.shadow-lg-#{$color} {
 		box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
 	}
+
+	@each $state, $pseudo in $states {
+		.#{$state}\:shadow-#{$color}#{$pseudo} {
+			box-shadow: 0 0.5rem 1rem rgba($value, 0.15) !important;
+		}
+
+		.#{$state}\:shadow-sm-#{$color}#{$pseudo} {
+			box-shadow: 0 0.125rem 0.25rem rgba($value, 0.075) !important;
+		}
+
+		.#{$state}\:shadow-lg-#{$color}#{$pseudo} {
+			box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
+		}
+	}
+
+	@include theme(light) {
+		[class*="light:shadow-#{$color}"] {
+			box-shadow: 0 0.5rem 1rem rgba($value, 0.15) !important;
+		}
+
+		[class*="light:shadow-sm-#{$color}"] {
+			box-shadow: 0 0.125rem 0.25rem rgba($value, 0.075) !important;
+		}
+
+		[class*="light:shadow-lg-#{$color}"] {
+			box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
+		}
+
+		@each $state, $pseudo in $states {
+			[class*="light:#{$state}:shadow-#{$color}"]#{$pseudo} {
+				box-shadow: 0 0.5rem 1rem rgba($value, 0.15) !important;
+			}
+
+			[class*="light:#{$state}:shadow-sm-#{$color}"]#{$pseudo} {
+				box-shadow: 0 0.125rem 0.25rem rgba($value, 0.075) !important;
+			}
+
+			[class*="light:#{$state}:shadow-lg-#{$color}"]#{$pseudo} {
+				box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
+			}
+		}
+	}
+
+	@include theme(dark) {
+		[class*="dark:shadow-#{$color}"] {
+			box-shadow: 0 0.5rem 1rem rgba($value, 0.15) !important;
+		}
+
+		[class*="dark:shadow-sm-#{$color}"] {
+			box-shadow: 0 0.125rem 0.25rem rgba($value, 0.075) !important;
+		}
+
+		[class*="dark:shadow-lg-#{$color}"] {
+			box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
+		}
+
+		@each $state, $pseudo in $states {
+			[class*="dark:#{$state}:shadow-#{$color}"]#{$pseudo} {
+				box-shadow: 0 0.5rem 1rem rgba($value, 0.15) !important;
+			}
+
+			[class*="dark:#{$state}:shadow-sm-#{$color}"]#{$pseudo} {
+				box-shadow: 0 0.125rem 0.25rem rgba($value, 0.075) !important;
+			}
+
+			[class*="dark:#{$state}:shadow-lg-#{$color}"]#{$pseudo} {
+				box-shadow: 0 1rem 3rem rgba($value, 0.175) !important;
+			}
+		}
+	}
 }
 
 $utilities: map-merge(

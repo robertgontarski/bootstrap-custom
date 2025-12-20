@@ -17,6 +17,20 @@
 		}
 	}
 
+	@each $state, $pseudo in $states {
+		.#{$state}\:text-bg-#{$color}#{$pseudo} {
+			color: color-contrast($value);
+			background-color: $value;
+			border: #{$btn-border-width} solid shade-color($value, 20%);
+		}
+
+		.#{$state}\:text-bg-outline-#{$color}#{$pseudo} {
+			color: shade-color($value, 10%);
+			border: #{$btn-border-width} solid tint-color($value, 60%);
+			background-color: tint-color($value, 80%);
+		}
+	}
+
 	@include theme(light) {
 		[class*="light:text-bg-#{$color}"] {
 			color: color-contrast($value);
@@ -29,8 +43,21 @@
 			border: #{$btn-border-width} solid tint-color($value, 60%);
 			background-color: tint-color($value, 80%);
 		}
-	}
 
+		@each $state, $pseudo in $states {
+			[class*="light:#{$state}:text-bg-#{$color}"]#{$pseudo} {
+				color: color-contrast($value);
+				background-color: $value;
+				border: #{$btn-border-width} solid shade-color($value, 20%);
+			}
+
+			[class*="light:#{$state}:text-bg-outline-#{$color}"]#{$pseudo} {
+				color: shade-color($value, 10%);
+				border: #{$btn-border-width} solid tint-color($value, 60%);
+				background-color: tint-color($value, 80%);
+			}
+		}
+	}
 
 	@include theme(dark) {
 		.text-bg-outline-#{$color} {
@@ -51,6 +78,20 @@
 			color: tint-color($value, 20%);
 			background-color: shade-color($value, 80%);
 			border-color: shade-color($value, 40%);
+		}
+
+		@each $state, $pseudo in $states {
+			[class*="dark:#{$state}:text-bg-#{$color}"]#{$pseudo} {
+				color: color-contrast($value);
+				background-color: $value;
+				border: #{$btn-border-width} solid shade-color($value, 20%);
+			}
+
+			[class*="dark:#{$state}:text-bg-outline-#{$color}"]#{$pseudo} {
+				color: tint-color($value, 20%);
+				background-color: shade-color($value, 80%);
+				border-color: shade-color($value, 40%);
+			}
 		}
 	}
 }

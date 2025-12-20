@@ -6,9 +6,25 @@ $border-side: (
 );
 
 @each $color, $value in $all-colors {
+	.border-#{$color} {
+		border-color: $value !important;
+	}
+
 	@each $side, $type in $border-side {
 		.border-#{$side}-#{$color} {
 			border-#{$type}-color: $value !important;
+		}
+	}
+
+	@each $state, $pseudo in $states {
+		.#{$state}\:border-#{$color}#{$pseudo} {
+			border-color: $value !important;
+		}
+
+		@each $side, $type in $border-side {
+			.#{$state}\:border-#{$side}-#{$color}#{$pseudo} {
+				border-#{$type}-color: $value !important;
+			}
 		}
 	}
 
@@ -22,6 +38,18 @@ $border-side: (
 				border-#{$type}-color: $value !important;
 			}
 		}
+
+		@each $state, $pseudo in $states {
+			[class*="light:#{$state}:border-#{$color}"]#{$pseudo} {
+				border-color: $value !important;
+			}
+
+			@each $side, $type in $border-side {
+				[class*="light:#{$state}:border-#{$side}-#{$color}"]#{$pseudo} {
+					border-#{$type}-color: $value !important;
+				}
+			}
+		}
 	}
 
 	@include theme(dark) {
@@ -32,6 +60,18 @@ $border-side: (
 		@each $side, $type in $border-side {
 			[class*="dark:border-#{$side}-#{$color}"] {
 				border-#{$type}-color: $value !important;
+			}
+		}
+
+		@each $state, $pseudo in $states {
+			[class*="dark:#{$state}:border-#{$color}"]#{$pseudo} {
+				border-color: $value !important;
+			}
+
+			@each $side, $type in $border-side {
+				[class*="dark:#{$state}:border-#{$side}-#{$color}"]#{$pseudo} {
+					border-#{$type}-color: $value !important;
+				}
 			}
 		}
 	}
