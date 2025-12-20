@@ -6,10 +6,10 @@ $transition-durations: (
 );
 
 $transition-easings: (
-  "ease-linear": linear,
-  "ease-in": ease-in,
-  "ease-out": ease-out,
-  "ease-in-out": ease-in-out
+  "transition-linear": linear,
+  "transition-in": ease-in,
+  "transition-out": ease-out,
+  "transition-in-out": ease-in-out
 );
 
 @each $class, $duration in $transition-durations {
