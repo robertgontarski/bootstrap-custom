@@ -3,3 +3,191 @@
 		@content;
 	}
 }
+
+// Internal: escapes `[` / `]` in a class-name segment so it is safe inside a
+// literal selector, e.g. `[16px]` -> `\[16px\]` for `.fs-\[16px\]`.
+@function escape-class($value) {
+	$string: $value;
+	@if type-of($value) != 'string' {
+		$string: quote('#{$value}');
+	}
+
+	$result: '';
+	@for $i from 1 through str-length($string) {
+		$char: str-slice($string, $i, $i);
+		@if $char == '[' or $char == ']' {
+			$result: '#{$result}\\#{$char}';
+		} @else {
+			$result: '#{$result}#{$char}';
+		}
+	}
+
+	@return unquote($result);
+}
+
+// Internal: joins non-null segments with `-`, escaping only the last one
+// (the value/key), e.g. class-name('cursor', md, '[16px]') -> cursor-md-\[16px\].
+@function class-name($segments...) {
+	$parts: ();
+	@each $segment in $segments {
+		@if $segment {
+			$parts: append($parts, $segment);
+		}
+	}
+
+	$last: length($parts);
+	$parts: set-nth($parts, $last, escape-class(nth($parts, $last)));
+
+	$result: '';
+	@each $part in $parts {
+		@if $result == '' {
+			$result: '#{$part}';
+		} @else {
+			$result: '#{$result}-#{$part}';
+		}
+	}
+
+	@return unquote($result);
+}
+
+// Internal: turns a plain keyword list into a key == value map, so
+// generate-variants can iterate cursor/display-style lists like colors.
+@function self-map($list) {
+	$map: ();
+	@each $item in $list {
+		$map: map-merge($map, ($item: $item));
+	}
+	@return $map;
+}
+
+// Appends ` !important` when $important is truthy, '' otherwise. For content
+// blocks passed to generate-variants: `color: #{$value}#{important-suffix($important)};`
+// - interpolate $value too, or Sass reads the bare value and the suffix as two
+// space-separated tokens and doubles the space. Callers still need a
+// `// reason:` comment at the call site (CLAUDE.md).
+@function important-suffix($important: false) {
+	@if $important {
+		@return ' !important';
+	}
+	@return '';
+}
+
+// Shared variant generator. Emits one utility's full matrix in a fixed,
+// layer-major order: base (every value), then each state in turn (every
+// value), then light: then dark: base (every value each), then light: then
+// dark: + state (within each theme, states in $states order, every value) -
+// so a later layer always wins the cascade regardless of value order, and
+// theme + state rules always come last among the non-breakpoint layers.
+// Breakpoint layers (base, then theme, ascending) are emitted last, one
+// breakpoint at a time.
+//
+// $name        class prefix, e.g. 'text' for `.text-red-500`; pass null when
+//              $values' keys are already full class names (e.g. 'transition-fast').
+// $values      map $key: $value, or a plain list of keywords (self-mapped).
+// $important   forwarded to @content as its 3rd argument; add a `// reason:`
+//              comment at the call site when passing true (CLAUDE.md).
+// $skip-base   omit the unprefixed base class (and its breakpoint form) when
+//              Bootstrap's utility API already emits it.
+// $states      list of (name, own-pseudo, ancestor-prefix) tuples, default
+//              $states; pass () to disable the state layer.
+// $themes      emit the light:/dark: base layer.
+// $theme-states emit the light:/dark: + state layer (needs $themes and a
+//              non-empty $states).
+// $breakpoints emit `<name>-<bp>-<key>` (+ themed) per $grid-breakpoints.
+// $breakpoint-themes emit the themed breakpoint layer (needs $breakpoints).
+//
+// @content receives ($value, $key, $important, $theme) for every selector
+// emitted; $theme is null outside a light:/dark: layer (base, state), and
+// 'light' / 'dark' inside one (theme base, theme+state, breakpoint-theme) -
+// a hook so one content block can vary its declaration by theme, e.g. the
+// automatic dark palette pairs (alert, text-bg-outline) where `dark:` needs
+// different values than the base/light content.
+@mixin generate-variants(
+	$name,
+	$values,
+	$important: false,
+	$skip-base: false,
+	$states: $states,
+	$themes: true,
+	$theme-states: true,
+	$breakpoints: false,
+	$breakpoint-themes: true
+) {
+	@if type-of($values) == list {
+		$values: self-map($values);
+	}
+
+	$theme-names: light, dark;
+
+	@if not $skip-base {
+		@each $key, $value in $values {
+			.#{class-name($name, $key)} {
+				@content($value, $key, $important, null);
+			}
+		}
+	}
+
+	@if length($states) > 0 {
+		@each $state, $pseudo, $ancestor in $states {
+			@each $key, $value in $values {
+				#{$ancestor}.#{$state}\:#{class-name($name, $key)}#{$pseudo} {
+					@content($value, $key, $important, null);
+				}
+			}
+		}
+	}
+
+	@if $themes {
+		@each $theme in $theme-names {
+			@include theme($theme) {
+				@each $key, $value in $values {
+					.#{$theme}\:#{class-name($name, $key)} {
+						@content($value, $key, $important, $theme);
+					}
+				}
+			}
+		}
+
+		@if $theme-states and length($states) > 0 {
+			@each $theme in $theme-names {
+				@include theme($theme) {
+					@each $state, $pseudo, $ancestor in $states {
+						@each $key, $value in $values {
+							#{$ancestor}.#{$theme}\:#{$state}\:#{class-name($name, $key)}#{$pseudo} {
+								@content($value, $key, $important, $theme);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@if $breakpoints {
+		@each $breakpoint, $min-width in $grid-breakpoints {
+			@if not $skip-base {
+				@include media-breakpoint-up($breakpoint) {
+					@each $key, $value in $values {
+						.#{class-name($name, $breakpoint, $key)} {
+							@content($value, $key, $important, null);
+						}
+					}
+				}
+			}
+
+			@if $breakpoint-themes {
+				@each $theme in $theme-names {
+					@include theme($theme) {
+						@include media-breakpoint-up($breakpoint) {
+							@each $key, $value in $values {
+								.#{$theme}\:#{class-name($name, $breakpoint, $key)} {
+									@content($value, $key, $important, $theme);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

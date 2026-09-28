@@ -1,5 +1,6 @@
 :root {
 	@each $color, $value in $all-colors {
 		--app-color-#{$color}: #{$value};
+		--app-color-#{$color}-rgb: #{to-rgb($value)};
 	}
 }

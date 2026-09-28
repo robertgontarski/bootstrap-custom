@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude run manifest (per-developer, never committed)
+.claude/run-manifest.json
+
+# Claude loop state (transient, never committed)
+.claude/loop.json
+.claude/loop.done
+.claude/loop-progress.md

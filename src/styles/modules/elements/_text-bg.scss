@@ -1,97 +1,52 @@
-@each $color, $value in $all-colors {
-	.text-bg-#{$color} {
-		color: color-contrast($value);
-		background-color: $value;
-		border: #{$btn-border-width} solid shade-color($value, 20%);
+@include generate-variants($name: text-bg, $values: $all-colors) using ($value, $key, $important, $theme) {
+	color: color-contrast($value);
+	background-color: $value;
+	border: #{$btn-border-width} solid shade-color($value, 20%);
+}
+
+@mixin generateTextBgOutlineLight($value) {
+	color: shade-color($value, 10%);
+	border: #{$btn-border-width} solid tint-color($value, 60%);
+	background-color: tint-color($value, 80%);
+}
+
+@mixin generateTextBgOutlineDarkPalette($value) {
+	color: tint-color($value, 20%);
+	background-color: shade-color($value, 80%);
+	border-color: shade-color($value, 40%);
+}
+
+@include generate-variants($name: text-bg-outline, $values: $all-colors, $states: (), $themes: false, $theme-states: false) using ($value, $key, $important, $theme) {
+	@include generateTextBgOutlineLight($value);
+
+	// `.force-dark` requires the base class on the same element, so the
+	// base's full `border` declaration already applies; only the color
+	// needs overriding here.
+	&:is(.force-dark) {
+		@include generateTextBgOutlineDarkPalette($value);
 	}
+}
 
-	.text-bg-outline-#{$color} {
-		color: shade-color($value, 10%);
-		border: #{$btn-border-width} solid tint-color($value, 60%);
-		background-color: tint-color($value, 80%);
-
-		&:is(.force-dark) {
-			color: tint-color($value, 20%);
-			background-color: shade-color($value, 80%);
-			border-color: shade-color($value, 40%);
-		}
-	}
-
-	@each $state, $pseudo in $states {
-		.#{$state}\:text-bg-#{$color}#{$pseudo} {
-			color: color-contrast($value);
-			background-color: $value;
-			border: #{$btn-border-width} solid shade-color($value, 20%);
-		}
-
-		.#{$state}\:text-bg-outline-#{$color}#{$pseudo} {
-			color: shade-color($value, 10%);
-			border: #{$btn-border-width} solid tint-color($value, 60%);
-			background-color: tint-color($value, 80%);
-		}
-	}
-
-	@include theme(light) {
-		[class*="light:text-bg-#{$color}"] {
-			color: color-contrast($value);
-			background-color: $value;
-			border: #{$btn-border-width} solid shade-color($value, 20%);
-		}
-
-		[class*="light:text-bg-outline-#{$color}"] {
-			color: shade-color($value, 10%);
-			border: #{$btn-border-width} solid tint-color($value, 60%);
-			background-color: tint-color($value, 80%);
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="light:#{$state}:text-bg-#{$color}"]#{$pseudo} {
-				color: color-contrast($value);
-				background-color: $value;
-				border: #{$btn-border-width} solid shade-color($value, 20%);
-			}
-
-			[class*="light:#{$state}:text-bg-outline-#{$color}"]#{$pseudo} {
-				color: shade-color($value, 10%);
-				border: #{$btn-border-width} solid tint-color($value, 60%);
-				background-color: tint-color($value, 80%);
-			}
+// Automatic dark palette (see _alert.scss for the mechanics): requires the
+// base class on the same element, so only the border color needs
+// overriding, not its width/style.
+@include theme(dark) {
+	@each $color, $value in $all-colors {
+		:where(.text-bg-outline-#{$color}:not(.force-light)) {
+			@include generateTextBgOutlineDarkPalette($value);
 		}
 	}
+}
 
-	@include theme(dark) {
-		.text-bg-outline-#{$color} {
-			&:not(.force-light) {
-				color: tint-color($value, 20%);
-				background-color: shade-color($value, 80%);
-				border-color: shade-color($value, 40%);
-			}
-		}
-
-		[class*="dark:text-bg-#{$color}"] {
-			color: color-contrast($value);
-			background-color: $value;
-			border: #{$btn-border-width} solid shade-color($value, 20%);
-		}
-
-		[class*="dark:text-bg-outline-#{$color}"] {
-			color: tint-color($value, 20%);
-			background-color: shade-color($value, 80%);
-			border-color: shade-color($value, 40%);
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="dark:#{$state}:text-bg-#{$color}"]#{$pseudo} {
-				color: color-contrast($value);
-				background-color: $value;
-				border: #{$btn-border-width} solid shade-color($value, 20%);
-			}
-
-			[class*="dark:#{$state}:text-bg-outline-#{$color}"]#{$pseudo} {
-				color: tint-color($value, 20%);
-				background-color: shade-color($value, 80%);
-				border-color: shade-color($value, 40%);
-			}
-		}
+@include generate-variants($name: text-bg-outline, $values: $all-colors, $skip-base: true) using ($value, $key, $important, $theme) {
+	@if $theme == dark {
+		// `dark:text-bg-outline-*` may be applied without the base class, so
+		// it needs the full border declaration (width, style, color), not
+		// just the color, to actually render a visible border.
+		color: tint-color($value, 20%);
+		background-color: shade-color($value, 80%);
+		border: #{$btn-border-width} solid shade-color($value, 40%);
+	} @else {
+		@include generateTextBgOutlineLight($value);
 	}
 }

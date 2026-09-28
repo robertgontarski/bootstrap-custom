@@ -14,34 +14,8 @@ $all-displays: (
 	flow-root
 );
 
-@each $d in $all-displays {
-	@include theme(light) {
-		[class*="light:d-#{$d}"] {
-			display: $d;
-		}
-	}
-
-	@include theme(dark) {
-		[class*="dark:d-#{$d}"] {
-			display: $d;
-		}
-	}
-
-	@each $breakpoint, $value in $grid-breakpoints {
-		@include theme(light) {
-			[class*="light:d-#{$breakpoint}-#{$d}"] {
-				@include media-breakpoint-up($breakpoint) {
-					display: $d;
-				}
-			}
-		}
-
-		@include theme(dark) {
-			[class*="dark:d-#{$breakpoint}-#{$d}"] {
-				@include media-breakpoint-up($breakpoint) {
-					display: $d;
-				}
-			}
-		}
-	}
+// reason: beats Bootstrap's !important display utility (`.d-*` / `.d-<bp>-*`)
+// so theme variants win over it on the same element (CLAUDE.md).
+@include generate-variants($name: d, $values: $all-displays, $important: true, $skip-base: true, $states: (), $breakpoints: true) using ($value, $key, $important, $theme) {
+	display: $value !important;
 }

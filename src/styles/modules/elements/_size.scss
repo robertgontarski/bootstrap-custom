@@ -1,69 +1,31 @@
 $min-size-custom-font: 8;
 $max-size-custom-font: 100;
 
-@each $breakpoint, $value in $grid-breakpoints {
-  @for $i from $min-size-custom-font through $max-size-custom-font {
-    [class*="fs-[#{$i}px]"] {
-      font-size: #{$i}px;
-    }
-  }
+$fs-arbitrary-sizes: ();
+@for $i from $min-size-custom-font through $max-size-custom-font {
+  $fs-arbitrary-sizes: map-merge($fs-arbitrary-sizes, ('[#{$i}px]': #{$i}px));
+}
 
-  @each $key, $size in $font-sizes {
-    .fs-#{$breakpoint}-#{$key} {
-      @include media-breakpoint-up($breakpoint) {
-        font-size: $size;
-      }
-    }
+// $font-sizes' named keys (1..6) and $fs-arbitrary-sizes' bracketed keys
+// never collide, so the merge is order-preserving: named forms first, then
+// arbitrary - both needed together at each breakpoint (see below).
+$fs-sizes: map-merge($font-sizes, $fs-arbitrary-sizes);
 
-    @for $i from $min-size-custom-font through $max-size-custom-font {
-      [class*="fs-#{$breakpoint}-[#{$i}px]"] {
-        font-size: #{$i}px;
-      }
-    }
-  }
+// reason: beats Bootstrap's !important `.fs-1`..`.fs-6` utility (rfs) so
+// arbitrary and responsive font sizes win over it (CLAUDE.md).
+@include generate-variants($name: fs, $values: $fs-arbitrary-sizes, $important: true, $states: ()) using ($value, $key, $important, $theme) {
+  font-size: $value !important;
+}
 
-  @include theme(light) {
-
-    @for $i from $min-size-custom-font through $max-size-custom-font {
-      [class*="light:fs-[#{$i}px]"] {
-        font-size: #{$i}px;
-      }
-    }
-
-    @each $key, $size in $font-sizes {
-      [class*="light:fs-#{$breakpoint}-#{$key}"] {
-        @include media-breakpoint-up($breakpoint) {
-          font-size: $size;
-        }
-      }
-
-      @for $i from $min-size-custom-font through $max-size-custom-font {
-        [class*="light:fs-#{$breakpoint}-[#{$i}px]"] {
-          font-size: #{$i}px;
-        }
-      }
-    }
-  }
-
-  @include theme(dark) {
-    @for $i from $min-size-custom-font through $max-size-custom-font {
-      [class*="dark:fs-[#{$i}px]"] {
-        font-size: #{$i}px;
-      }
-    }
-
-    @each $key, $size in $font-sizes {
-      [class*="dark:fs-#{$breakpoint}-#{$key}"] {
-        @include media-breakpoint-up($breakpoint) {
-          font-size: $size;
-        }
-      }
-
-      @for $i from $min-size-custom-font through $max-size-custom-font {
-        [class*="dark:fs-#{$breakpoint}-[#{$i}px]"] {
-          font-size: #{$i}px;
-        }
-      }
+// Per breakpoint ascending, named and arbitrary sizes share one call so both
+// land inside the same media-breakpoint-up block, base before themed, and a
+// wider breakpoint's rules always come after a narrower one's.
+@each $breakpoint, $min-width in $grid-breakpoints {
+  @include media-breakpoint-up($breakpoint) {
+    // reason: beats Bootstrap's !important `.fs-1`..`.fs-6` utility (rfs) so
+    // responsive named and arbitrary font sizes win over it (CLAUDE.md).
+    @include generate-variants($name: fs-#{$breakpoint}, $values: $fs-sizes, $important: true, $states: ()) using ($value, $key, $important, $theme) {
+      font-size: $value !important;
     }
   }
 }

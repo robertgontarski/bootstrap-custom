@@ -1,5 +1,17 @@
+$transition-default-duration: .3s;
+
+$transition-base: (
+  "transition": $transition-default-duration
+);
+
+$transition-properties: (
+  "transition-colors": (color, background-color, border-color, text-decoration-color, fill, stroke),
+  "transition-opacity": opacity,
+  "transition-transform": transform,
+  "transition-shadow": box-shadow
+);
+
 $transition-durations: (
-  "transition": .3s,
   "transition-fast": .15s,
   "transition-slow": .6s,
   "transition-none": 0
@@ -12,44 +24,43 @@ $transition-easings: (
   "transition-in-out": ease-in-out
 );
 
-@each $class, $duration in $transition-durations {
-  .#{$class} {
-    transition-property: all;
-    transition-duration: $duration;
-    transition-timing-function: ease;
-  }
-
-  @include theme(light) {
-    [class*="light:#{$class}"] {
-      transition-property: all;
-      transition-duration: $duration;
-      transition-timing-function: ease;
-    }
-  }
-
-  @include theme(dark) {
-    [class*="dark:#{$class}"] {
-      transition-property: all;
-      transition-duration: $duration;
-      transition-timing-function: ease;
-    }
-  }
+@include generate-variants($name: null, $values: $transition-base, $states: ()) using ($value, $key, $important, $theme) {
+  transition-property: all;
+  transition-duration: $value;
+  transition-timing-function: ease;
 }
 
-@each $class, $easing in $transition-easings {
-  .#{$class} {
-    transition-timing-function: $easing;
+@include generate-variants($name: null, $values: $transition-properties, $states: ()) using ($value, $key, $important, $theme) {
+  transition-property: #{$value};
+  transition-duration: $transition-default-duration;
+  transition-timing-function: ease;
+}
+
+@include generate-variants($name: null, $values: $transition-durations, $states: ()) using ($value, $key, $important, $theme) {
+  transition-duration: $value;
+}
+
+@include generate-variants($name: null, $values: $transition-easings, $states: ()) using ($value, $key, $important, $theme) {
+  transition-timing-function: $value;
+}
+
+// Same selectors as above (base + light:/dark:), placed last so equal
+// specificity resolves in their favor (themed rules are `[data-bs-theme] .x`,
+// specificity (0,2,0) - matched here, not just beaten by source order alone).
+@media (prefers-reduced-motion: reduce) {
+  @include generate-variants($name: null, $values: $transition-base, $states: ()) using ($value, $key, $important, $theme) {
+    transition: none;
   }
 
-  @include theme(light) {
-    [class*="light:#{$class}"] {
-      transition-timing-function: $easing;
-    }
+  @include generate-variants($name: null, $values: $transition-properties, $states: ()) using ($value, $key, $important, $theme) {
+    transition: none;
   }
 
-  @include theme(dark) {
-    [class*="dark:#{$class}"] {
-      transition-timing-function: $easing;
-    }
+  @include generate-variants($name: null, $values: $transition-durations, $states: ()) using ($value, $key, $important, $theme) {
+    transition: none;
+  }
+
+  @include generate-variants($name: null, $values: $transition-easings, $states: ()) using ($value, $key, $important, $theme) {
+    transition: none;
   }
 }

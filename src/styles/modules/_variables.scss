@@ -1,5 +1,22 @@
+// State variants, in final cascade order: group-hover < hover < focus <
+// focus-visible < active < disabled. Position in the list is cascade order,
+// so a later state wins at equal specificity.
+//
+// Each entry is (name, own-pseudo, ancestor-prefix):
+// - name: class-name segment, e.g. `hover` in `.hover\:text-red-500`.
+// - own-pseudo: pseudo-class appended to the utility class itself (`:hover`);
+//   '' when the state lives on an ancestor instead (group-hover).
+// - ancestor-prefix: selector + trailing combinator space prepended before
+//   the utility class (`:where(.group):hover `); '' when there is none.
+//
+// `:where(.group):hover` keeps group-hover at the same specificity as the
+// pseudo-class states (a class plus a pseudo-class), so list order alone
+// decides a tie.
 $states: (
-	'hover': ':hover',
-	'active': ':active',
-	'focus': ':focus'
+	(group-hover, '', ':where(.group):hover '),
+	(hover, ':hover', ''),
+	(focus, ':focus', ''),
+	(focus-visible, ':focus-visible', ''),
+	(active, ':active', ''),
+	(disabled, ':disabled', '')
 );

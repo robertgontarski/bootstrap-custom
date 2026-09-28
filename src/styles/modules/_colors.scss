@@ -1,4 +1,4 @@
-$grays: (
+$grays-prefixed: (
 	"gray-100": $gray-100,
 	"gray-200": $gray-200,
 	"gray-300": $gray-300,
@@ -10,7 +10,17 @@ $grays: (
 	"gray-900": $gray-900
 );
 
-$all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans, $grays);
+$all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans, $grays-prefixed);
+
+@function app-rgba-css-var($key, $target) {
+	@return rgba(var(--app-color-#{$key}-rgb), var(--#{$prefix}#{$target}-opacity));
+}
+
+$all-colors-text: map-loop($all-colors, app-rgba-css-var, "$key", "text");
+$all-colors-bg: map-loop($all-colors, app-rgba-css-var, "$key", "bg");
+$all-colors-border: map-loop($all-colors, app-rgba-css-var, "$key", "border");
+$all-colors-focus-ring: map-loop($all-colors, app-rgba-css-var, "$key", "focus-ring");
+$all-colors-link-underline: map-loop($all-colors, app-rgba-css-var, "$key", "link-underline");
 
 $utilities: map-merge(
 		$utilities,
@@ -21,7 +31,7 @@ $utilities: map-merge(
 						values: map-merge(
 								map-get(map-get($utilities, "color"), "values"),
 									(
-										$all-colors
+										$all-colors-text
 									),
 						),
 					),
@@ -32,7 +42,7 @@ $utilities: map-merge(
 						values: map-merge(
 								map-get(map-get($utilities, "background-color"), "values"),
 									(
-										$all-colors
+										$all-colors-bg
 									),
 						),
 					),
@@ -43,7 +53,29 @@ $utilities: map-merge(
 						values: map-merge(
 								map-get(map-get($utilities, "border-color"), "values"),
 									(
-										$all-colors
+										$all-colors-border
+									),
+						),
+					),
+			),
+			"focus-ring": map-merge(
+					map-get($utilities, "focus-ring"),
+					(
+						values: map-merge(
+								map-get(map-get($utilities, "focus-ring"), "values"),
+									(
+										$all-colors-focus-ring
+									),
+						),
+					),
+			),
+			"link-underline": map-merge(
+					map-get($utilities, "link-underline"),
+					(
+						values: map-merge(
+								map-get(map-get($utilities, "link-underline"), "values"),
+									(
+										$all-colors-link-underline
 									),
 						),
 					),

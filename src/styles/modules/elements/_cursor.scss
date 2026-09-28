@@ -37,44 +37,6 @@ $all-cursors: (
 	zoom-out
 );
 
-@each $cursor in $all-cursors {
-	.cursor-#{$cursor} {
-		cursor: $cursor;
-	}
-
-	@include theme(light) {
-		[class*="light:cursor-#{$cursor}"] {
-			cursor: $cursor;
-		}
-	}
-
-	@include theme(dark) {
-		[class*="dark:cursor-#{$cursor}"] {
-			cursor: $cursor;
-		}
-	}
-
-	@each $breakpoint, $value in $grid-breakpoints {
-		.cursor-#{$breakpoint}-#{$cursor} {
-			@include media-breakpoint-up($breakpoint) {
-				cursor: $cursor;
-			}
-		}
-
-		@include theme(light) {
-			[class*="light:cursor-#{$breakpoint}-#{$cursor}"] {
-				@include media-breakpoint-up($breakpoint) {
-					cursor: $cursor;
-				}
-			}
-		}
-
-		@include theme(dark) {
-			[class*="dark:cursor-#{$breakpoint}-#{$cursor}"] {
-				@include media-breakpoint-up($breakpoint) {
-					cursor: $cursor;
-				}
-			}
-		}
-	}
+@include generate-variants($name: cursor, $values: $all-cursors, $states: (), $breakpoints: true) using ($value, $key, $important, $theme) {
+	cursor: $value;
 }

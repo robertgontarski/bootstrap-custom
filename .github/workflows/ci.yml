@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["20", "22", "24"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - name: Run tests (pretest builds dist/bootstrap.css)
+        run: npm test
+      # size is informational; captured right after the build/test step so an audit
+      # failure below never hides it, without needing an `if: always()` guard
+      - name: Report dist/bootstrap.css size
+        run: |
+          raw_bytes=$(( $(wc -c < dist/bootstrap.css) ))
+          gzip_bytes=$(( $(gzip -c dist/bootstrap.css | wc -c) ))
+          {
+            echo "### dist/bootstrap.css size (Node ${{ matrix.node-version }})"
+            echo ""
+            echo "| Metric | Bytes |"
+            echo "| --- | --- |"
+            echo "| Raw | ${raw_bytes} |"
+            echo "| Gzip | ${gzip_bytes} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Audit dependencies
+        run: npm audit --audit-level=high

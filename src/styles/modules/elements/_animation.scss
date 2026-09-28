@@ -1,0 +1,54 @@
+$all-animations: (
+	"animate-spin": app-spin 1s linear infinite,
+	"animate-ping": app-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite,
+	"animate-pulse": app-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite,
+	"animate-bounce": app-bounce 1s infinite
+);
+
+@keyframes app-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes app-ping {
+	75%,
+	100% {
+		transform: scale(2);
+		opacity: 0;
+	}
+}
+
+@keyframes app-pulse {
+	50% {
+		opacity: .5;
+	}
+}
+
+@keyframes app-bounce {
+	0%,
+	100% {
+		transform: translateY(-25%);
+		animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+	}
+	50% {
+		transform: none;
+		animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+	}
+}
+
+@include generate-variants($name: null, $values: $all-animations, $states: ()) using ($value, $key, $important, $theme) {
+	animation: #{$value};
+}
+
+// Same selectors as above (base + light:/dark:), placed last so equal
+// specificity resolves in their favor (themed rules are `[data-bs-theme] .x`,
+// specificity (0,2,0) - matched here, not just beaten by source order alone).
+@media (prefers-reduced-motion: reduce) {
+	@include generate-variants($name: null, $values: $all-animations, $states: ()) using ($value, $key, $important, $theme) {
+		animation: none;
+	}
+}

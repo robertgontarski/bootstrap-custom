@@ -1,35 +1,6 @@
-@each $color, $value in $all-colors {
-	.text-#{$color} {
-		color: $value;
-	}
-
-	@each $state, $pseudo in $states {
-		.#{$state}\:text-#{$color}#{$pseudo} {
-			color: $value;
-		}
-	}
-
-	@include theme(light) {
-		[class*="light:text-#{$color}"] {
-			color: $value;
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="light:#{$state}:text-#{$color}"]#{$pseudo} {
-				color: $value;
-			}
-		}
-	}
-
-	@include theme(dark) {
-		[class*="dark:text-#{$color}"] {
-			color: $value;
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="dark:#{$state}:text-#{$color}"]#{$pseudo} {
-				color: $value;
-			}
-		}
-	}
+// reason: beats Bootstrap's !important color utility (`.text-*`) so state
+// and theme variants win over it, and over other !important Bootstrap
+// utilities (e.g. `.text-body`) applied to the same element (CLAUDE.md).
+@include generate-variants($name: text, $values: $all-colors, $important: true, $skip-base: true) using ($value, $key, $important, $theme) {
+	color: $value !important;
 }

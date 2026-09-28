@@ -1,0 +1,23 @@
+$all-line-clamps: (
+	1,
+	2,
+	3,
+	4,
+	5,
+	6,
+	none
+);
+
+@include generate-variants($name: line-clamp, $values: $all-line-clamps, $states: (), $breakpoints: true) using ($value, $key, $important, $theme) {
+	@if $value == none {
+		overflow: visible;
+		display: block;
+		-webkit-box-orient: horizontal;
+		-webkit-line-clamp: unset;
+	} @else {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: $value;
+	}
+}

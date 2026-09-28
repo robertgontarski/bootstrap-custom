@@ -1,0 +1,33 @@
+$gradient-directions: (
+	t: "to top",
+	tr: "to top right",
+	r: "to right",
+	br: "to bottom right",
+	b: "to bottom",
+	bl: "to bottom left",
+	l: "to left",
+	tl: "to top left"
+);
+
+@include generate-variants($name: bg-gradient-to, $values: $gradient-directions, $states: (), $themes: false, $theme-states: false) using ($value, $key, $important, $theme) {
+	background-image: linear-gradient(#{$value}, var(--app-gradient-stops));
+}
+
+// `from-*`, `via-*` and `to-*` all set `--app-gradient-to`, so this order
+// (each family's base then its light:/dark: layer, before the next family
+// starts) is load-bearing: at equal specificity, `via-*` must beat the
+// default `--app-gradient-to` set by `from-*`, and `to-*` must beat both.
+@include generate-variants($name: from, $values: $all-colors, $states: ()) using ($value, $key, $important, $theme) {
+	--app-gradient-from: #{$value};
+	--app-gradient-to: rgba(var(--app-color-#{$key}-rgb), 0);
+	--app-gradient-stops: var(--app-gradient-from), var(--app-gradient-to);
+}
+
+@include generate-variants($name: via, $values: $all-colors, $states: ()) using ($value, $key, $important, $theme) {
+	--app-gradient-to: rgba(var(--app-color-#{$key}-rgb), 0);
+	--app-gradient-stops: var(--app-gradient-from), #{$value}, var(--app-gradient-to);
+}
+
+@include generate-variants($name: to, $values: $all-colors, $states: ()) using ($value, $key, $important, $theme) {
+	--app-gradient-to: #{$value};
+}

@@ -9,21 +9,6 @@
 	}
 }
 
-@each $color, $value in $all-colors {
-	.link-#{$color} {
-		@include generateLink($color, $value);
-	}
-
-	@include theme(light) {
-		[class*="light:link-#{$color}"] {
-			@include generateLink($color, $value);
-		}
-	}
-
-
-	@include theme(dark) {
-		[class*="dark:link-#{$color}"] {
-			@include generateLink($color, $value);
-		}
-	}
+@include generate-variants($name: link, $values: $all-colors, $states: ()) using ($value, $key, $important, $theme) {
+	@include generateLink($key, $value);
 }

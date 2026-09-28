@@ -28,13 +28,14 @@ function getFilesFromDir(dir, extensionsConfig = []) {
 export default defineConfig({
 	resolve: {
 		alias: {
-			'@bootstrap': path.resolve(__dirname, 'node_modules/bootstrap/'),
+			'@bootstrap': path.resolve(import.meta.dirname, 'node_modules/bootstrap/'),
 		},
 	},
 	build: {
-		rollupOptions: {
+		cssTarget: ['chrome87', 'edge88', 'firefox78', 'safari14'],
+		rolldownOptions: {
 			input: [
-				...getFilesFromDir(path.resolve(__dirname, 'src/styles'), [
+				...getFilesFromDir(path.resolve(import.meta.dirname, 'src/styles'), [
 					{extension: '.scss', exceptions: [/^_/]},
 				])
 			],

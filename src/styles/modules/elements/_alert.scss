@@ -1,79 +1,38 @@
-@each $color, $value in $all-colors {
-	.alert-#{$color} {
+@mixin generateAlert($value, $theme) {
+	@if $theme == dark {
+		color: tint-color($value, 20%);
+		background-color: shade-color($value, 80%);
+		border-color: shade-color($value, 40%);
+	} @else {
 		color: tint-color($value, 40%);
 		background-color: tint-color($value, 80%);
 		border-color: tint-color($value, 60%);
-
-		a {
-			color: tint-color($value, 40%);
-		}
 	}
 
-	@each $state, $pseudo in $states {
-		.#{$state}\:alert-#{$color}#{$pseudo} {
-			color: tint-color($value, 40%);
-			background-color: tint-color($value, 80%);
-			border-color: tint-color($value, 60%);
-
-			a {
-				color: tint-color($value, 40%);
-			}
-		}
+	a {
+		color: tint-color($value, 40%);
 	}
+}
 
-	@include theme(light) {
-		[class*="light:alert-#{$color}"] {
-			color: tint-color($value, 40%);
-			background-color: tint-color($value, 80%);
-			border-color: tint-color($value, 60%);
+@include generate-variants($name: alert, $values: $all-colors, $states: (), $themes: false, $theme-states: false) using ($value, $key, $important, $theme) {
+	@include generateAlert($value, $theme);
+}
 
-			a {
-				color: tint-color($value, 40%);
-			}
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="light:#{$state}:alert-#{$color}"]#{$pseudo} {
-				color: tint-color($value, 40%);
-				background-color: tint-color($value, 80%);
-				border-color: tint-color($value, 60%);
-
-				a {
-					color: tint-color($value, 40%);
-				}
-			}
-		}
-	}
-
-	@include theme(dark) {
-		.alert-#{$color} {
-			&:not(.force-light) {
-				color: tint-color($value, 20%);
-				background-color: shade-color($value, 80%);
-				border-color: shade-color($value, 40%);
-			}
-		}
-
-		[class*="dark:alert-#{$color}"] {
+// Automatic dark palette: switches every `.alert-<color>` to the dark
+// palette under a dark ancestor unless opted out with `.force-light`. Kept
+// inside `:where()` so it carries only the base class's specificity and
+// wins by position (right after the base layer, before states); `dark:` and
+// state variants have higher specificity and always beat it (CLAUDE.md).
+@include theme(dark) {
+	@each $color, $value in $all-colors {
+		:where(.alert-#{$color}:not(.force-light)) {
 			color: tint-color($value, 20%);
 			background-color: shade-color($value, 80%);
-			border-color: shade-color($value, 40%);;
-
-			a {
-				color: tint-color($value, 40%);
-			}
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="dark:#{$state}:alert-#{$color}"]#{$pseudo} {
-				color: tint-color($value, 20%);
-				background-color: shade-color($value, 80%);
-				border-color: shade-color($value, 40%);
-
-				a {
-					color: tint-color($value, 40%);
-				}
-			}
+			border-color: shade-color($value, 40%);
 		}
 	}
+}
+
+@include generate-variants($name: alert, $values: $all-colors, $skip-base: true) using ($value, $key, $important, $theme) {
+	@include generateAlert($value, $theme);
 }

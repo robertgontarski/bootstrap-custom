@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>bootstrap-custom - utility demo</title>
+	<link rel="stylesheet" href="/src/styles/bootstrap.scss" />
+</head>
+<body>
+	<div class="container py-4">
+		<header class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-5">
+			<h1 class="fs-3 mb-0">bootstrap-custom - utility demo</h1>
+			<button type="button" id="theme-toggle" class="btn btn-outline-blue-500" aria-pressed="false">
+				Switch to dark theme
+			</button>
+		</header>
+
+		<main>
+			<section class="mb-5" aria-labelledby="states-heading">
+				<h2 id="states-heading">Interactive states</h2>
+				<p>
+					Every state-capable family (text, bg, border, shadow, text-bg,
+					text-bg-outline, fill, stroke) supports the same
+					<code>hover:</code>, <code>focus:</code>, <code>focus-visible:</code>,
+					<code>active:</code>, <code>disabled:</code>, <code>group-hover:</code>
+					and theme + state (<code>dark:hover:</code>) prefixes shown here on
+					text and background colors.
+				</p>
+
+				<div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+					<p class="mb-0 hover:text-blue-500">Hover this text <code>hover:text-blue-500</code></p>
+					<button type="button" class="btn btn-blue-500 focus:bg-purple-500">Click or tab here <code>focus:bg-purple-500</code></button>
+					<button type="button" class="btn btn-blue-500 focus-visible:bg-purple-500">Tab here (keyboard) <code>focus-visible:bg-purple-500</code></button>
+					<button type="button" class="btn btn-blue-500 active:bg-purple-500">Press and hold <code>active:bg-purple-500</code></button>
+					<button type="button" class="btn btn-blue-500 disabled:bg-gray-300 disabled:text-gray-700" disabled>Disabled button <code>disabled:bg-gray-300</code></button>
+					<p class="mb-0 dark:hover:text-red-500">Hover in dark theme <code>dark:hover:text-red-500</code></p>
+				</div>
+
+				<div class="mb-3">
+					<label for="states-disabled-input" class="form-label">Disabled input</label>
+					<input id="states-disabled-input" type="text" class="form-control disabled:bg-gray-300" value="disabled:bg-gray-300" disabled>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4">
+						<div class="group card">
+							<div class="card-body">
+								<h3 class="h6 group-hover:text-blue-500">Hover this card <code>group-hover:text-blue-500</code></h3>
+								<p class="mb-0 p-2 rounded group-hover:bg-purple-500 group-hover:text-gray-100">Hover the card, not this text <code>group-hover:bg-purple-500</code></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="text-heading">
+				<h2 id="text-heading">Text color</h2>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<p class="mb-0 text-blue-500">Sample <code>text-blue-500</code></p>
+					<p class="mb-0 text-purple-500">Sample <code>text-purple-500</code></p>
+					<p class="mb-0 text-gray-700">Sample <code>text-gray-700</code></p>
+					<p class="mb-0 dark:text-red-500">Dark theme <code>dark:text-red-500</code></p>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="bg-heading">
+				<h2 id="bg-heading">Background color</h2>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<p class="mb-0 p-2 rounded bg-blue-500 text-white">Sample <code>bg-blue-500</code></p>
+					<p class="mb-0 p-2 rounded bg-blue-500 bg-opacity-50 text-white">Sample <code>bg-blue-500 bg-opacity-50</code></p>
+					<p class="mb-0 p-2 rounded bg-purple-500 text-white">Sample <code>bg-purple-500</code></p>
+					<p class="mb-0 p-2 rounded dark:bg-red-500 dark:text-gray-100">Dark theme <code>dark:bg-red-500</code></p>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="border-heading">
+				<h2 id="border-heading">Border color</h2>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<p class="mb-0 p-2 border border-blue-500">All sides <code>border border-blue-500</code></p>
+					<p class="mb-0 p-2 border border-top border-top-purple-500">Top only <code>border-top border-top-purple-500</code></p>
+					<p class="mb-0 p-2 border border-end border-end-purple-500">End only <code>border-end border-end-purple-500</code></p>
+					<p class="mb-0 p-2 border border-bottom border-bottom-purple-500">Bottom only <code>border-bottom border-bottom-purple-500</code></p>
+					<p class="mb-0 p-2 border border-start border-start-purple-500">Start only <code>border-start border-start-purple-500</code></p>
+					<p class="mb-0 p-2 border hover:border-blue-500">Hover <code>hover:border-blue-500</code></p>
+					<p class="mb-0 p-2 border dark:border-red-500">Dark theme <code>dark:border-red-500</code></p>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="shadow-heading">
+				<h2 id="shadow-heading">Shadow color</h2>
+				<div class="d-flex flex-wrap gap-4 align-items-center">
+					<p class="mb-0 p-3 shadow-blue-500">Default <code>shadow-blue-500</code></p>
+					<p class="mb-0 p-3 shadow-sm-blue-500">Small <code>shadow-sm-blue-500</code></p>
+					<p class="mb-0 p-3 shadow-lg-blue-500">Large <code>shadow-lg-blue-500</code></p>
+					<p class="mb-0 p-3 hover:shadow-purple-500">Hover <code>hover:shadow-purple-500</code></p>
+					<p class="mb-0 p-3 dark:shadow-red-500">Dark theme <code>dark:shadow-red-500</code></p>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="alert-heading">
+				<h2 id="alert-heading">Alert</h2>
+				<div class="alert alert-blue-500" role="alert">
+					<code>alert-blue-500</code> - switches to a dark palette automatically under a dark ancestor.
+				</div>
+				<div class="alert alert-blue-500 force-light" role="alert">
+					<code>alert-blue-500 force-light</code> - keeps the light palette in every theme.
+				</div>
+				<div class="alert alert-blue-500 dark:alert-red-500" role="alert">
+					<code>alert-blue-500 dark:alert-red-500</code> - turns red in the dark theme.
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="text-bg-heading">
+				<h2 id="text-bg-heading">Text-bg / text-bg-outline</h2>
+
+				<h3 class="h6">text-bg</h3>
+				<div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+					<span class="badge text-bg-blue-500">text-bg-blue-500</span>
+					<span class="badge text-bg-purple-500">text-bg-purple-500</span>
+					<span class="badge hover:text-bg-blue-500">Hover <code>hover:text-bg-blue-500</code></span>
+				</div>
+
+				<h3 class="h6">text-bg-outline</h3>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<span class="badge text-bg-outline-blue-500">text-bg-outline-blue-500</span>
+					<span class="badge text-bg-outline-blue-500 force-dark">text-bg-outline-blue-500 force-dark</span>
+					<span class="badge dark:text-bg-outline-blue-500">dark:text-bg-outline-blue-500 (visible border only in the dark theme)</span>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="btn-heading">
+				<h2 id="btn-heading">Button / button-outline</h2>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<button type="button" class="btn btn-blue-500">btn-blue-500</button>
+					<button type="button" class="btn btn-outline-blue-500">btn-outline-blue-500</button>
+					<button type="button" class="btn light:btn-purple-500">light:btn-purple-500</button>
+					<button type="button" class="btn dark:btn-purple-500">dark:btn-purple-500</button>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="link-heading">
+				<h2 id="link-heading">Link</h2>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<p class="mb-0"><a href="#" class="link-blue-500">Example</a> uses <code>link-blue-500</code></p>
+					<p class="mb-0"><a href="#" class="link-underline-purple-500">Example</a> uses <code>link-underline-purple-500</code></p>
+					<p class="mb-0"><a href="#" class="dark:link-red-500">Example</a> uses <code>dark:link-red-500</code></p>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="focus-ring-heading">
+				<h2 id="focus-ring-heading">Focus ring</h2>
+				<button type="button" class="btn btn-blue-500 focus-ring focus-ring-purple-500">
+					Tab to this button <code>focus-ring focus-ring-purple-500</code>
+				</button>
+			</section>
+
+			<section class="mb-5" aria-labelledby="fill-stroke-heading">
+				<h2 id="fill-stroke-heading">Fill / stroke</h2>
+				<div class="d-flex flex-wrap gap-4 align-items-center">
+					<div>
+						<svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true">
+							<circle cx="12" cy="12" r="10" class="fill-red-500 stroke-blue-500" stroke-width="2" />
+						</svg>
+						<p class="mb-0"><code>fill-red-500 stroke-blue-500</code></p>
+					</div>
+					<div>
+						<svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true">
+							<circle cx="12" cy="12" r="10" class="fill-green-500 hover:fill-purple-500 dark:fill-purple-500" stroke-width="2" />
+						</svg>
+						<p class="mb-0"><code>fill-green-500 hover:fill-purple-500 dark:fill-purple-500</code></p>
+					</div>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="accent-heading">
+				<h2 id="accent-heading">Accent</h2>
+				<div class="form-check">
+					<input class="form-check-input accent-green-500" type="checkbox" id="accent-checkbox" checked>
+					<label class="form-check-label" for="accent-checkbox">accent-green-500 checkbox</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input accent-purple-500" type="radio" id="accent-radio" name="accent-radio-group" checked>
+					<label class="form-check-label" for="accent-radio">accent-purple-500 radio</label>
+				</div>
+				<div>
+					<label for="accent-range" class="form-label">accent-red-500 range, dark:accent-blue-500</label>
+					<input type="range" class="form-range accent-red-500 dark:accent-blue-500" id="accent-range">
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="gradient-heading">
+				<h2 id="gradient-heading">Gradients</h2>
+				<div class="d-flex flex-column flex-md-row gap-3">
+					<div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded flex-fill">
+						<code>bg-gradient-to-r from-blue-500 to-purple-500</code>
+					</div>
+					<div class="bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500 text-white p-4 rounded flex-fill">
+						<code>bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500</code>
+					</div>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="font-size-heading">
+				<h2 id="font-size-heading">Font sizes</h2>
+				<p class="mb-1 fs-1">fs-1 (native Bootstrap)</p>
+				<p class="mb-1 fs-md-4">fs-md-4 (from the md breakpoint up)</p>
+				<p class="mb-1 fs-[16px]">fs-[16px] (arbitrary, every width)</p>
+				<p class="mb-1 fs-md-[24px]">fs-md-[24px] (arbitrary, from the md breakpoint up)</p>
+			</section>
+
+			<section class="mb-5" aria-labelledby="cursor-heading">
+				<h2 id="cursor-heading">Cursor</h2>
+				<div class="d-flex flex-wrap gap-3 align-items-center">
+					<span class="p-2 border rounded cursor-pointer">cursor-pointer</span>
+					<span class="p-2 border rounded cursor-not-allowed">cursor-not-allowed</span>
+					<span class="p-2 border rounded cursor-default cursor-md-pointer">cursor-default cursor-md-pointer</span>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="display-heading">
+				<h2 id="display-heading">Display theme variants</h2>
+				<div class="p-2 border mb-2 light:d-block dark:d-none">light:d-block dark:d-none (visible only in the light theme)</div>
+				<div class="p-2 border light:d-none dark:d-block">light:d-none dark:d-block (visible only in the dark theme)</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="transition-heading">
+				<h2 id="transition-heading">Transition</h2>
+				<div class="d-flex flex-wrap gap-2">
+					<button type="button" class="btn btn-blue-500 transition hover:bg-purple-500">transition</button>
+					<button type="button" class="btn btn-blue-500 transition-colors hover:bg-purple-500">transition-colors</button>
+					<button type="button" class="btn btn-blue-500 transition-opacity hover:bg-purple-500">transition-opacity</button>
+					<button type="button" class="btn btn-blue-500 transition-transform hover:bg-purple-500">transition-transform</button>
+					<button type="button" class="btn btn-blue-500 transition-shadow hover:shadow-lg-purple-500">transition-shadow</button>
+					<button type="button" class="btn btn-blue-500 transition transition-fast hover:bg-purple-500">transition-fast</button>
+					<button type="button" class="btn btn-blue-500 transition transition-slow hover:bg-purple-500">transition-slow</button>
+					<button type="button" class="btn btn-blue-500 transition transition-none hover:bg-purple-500">transition-none</button>
+					<button type="button" class="btn btn-blue-500 transition transition-linear hover:bg-purple-500">transition-linear</button>
+					<button type="button" class="btn btn-blue-500 transition transition-in hover:bg-purple-500">transition-in</button>
+					<button type="button" class="btn btn-blue-500 transition transition-out hover:bg-purple-500">transition-out</button>
+					<button type="button" class="btn btn-blue-500 transition transition-in-out hover:bg-purple-500">transition-in-out</button>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="animate-heading">
+				<h2 id="animate-heading">Animate</h2>
+				<p class="text-body-secondary">Disabled automatically when the OS "reduce motion" setting is on.</p>
+				<div class="d-flex flex-wrap gap-4 align-items-center">
+					<div>
+						<span class="fs-2 animate-spin" aria-hidden="true">&#9680;</span>
+						<code>animate-spin</code>
+					</div>
+					<div>
+						<span class="fs-2 animate-ping" aria-hidden="true">&#9679;</span>
+						<code>animate-ping</code>
+					</div>
+					<div>
+						<span class="fs-2 animate-pulse" aria-hidden="true">&#9679;</span>
+						<code>animate-pulse</code>
+					</div>
+					<div>
+						<span class="fs-2 animate-bounce" aria-hidden="true">&#9679;</span>
+						<code>animate-bounce</code>
+					</div>
+				</div>
+			</section>
+
+			<section class="mb-5" aria-labelledby="line-clamp-heading">
+				<h2 id="line-clamp-heading">Line clamp</h2>
+				<div class="row g-3">
+					<div class="col-md-6">
+						<p class="line-clamp-3">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+							enim ad minim veniam, quis nostrud exercitation ullamco laboris
+							nisi ut aliquip ex ea commodo consequat.
+						</p>
+						<code>line-clamp-3</code>
+					</div>
+					<div class="col-md-6">
+						<p class="line-clamp-none line-clamp-md-2">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+							enim ad minim veniam, quis nostrud exercitation ullamco laboris
+							nisi ut aliquip ex ea commodo consequat.
+						</p>
+						<code>line-clamp-none line-clamp-md-2</code>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<script type="module">
+		const toggle = document.getElementById('theme-toggle');
+		const root = document.documentElement;
+
+		toggle.addEventListener('click', () => {
+			const isDark = root.getAttribute('data-bs-theme') === 'dark';
+			const nextTheme = isDark ? 'light' : 'dark';
+
+			root.setAttribute('data-bs-theme', nextTheme);
+			toggle.setAttribute('aria-pressed', String(!isDark));
+			toggle.textContent = isDark ? 'Switch to dark theme' : 'Switch to light theme';
+		});
+	</script>
+</body>
+</html>

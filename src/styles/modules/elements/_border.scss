@@ -5,74 +5,17 @@ $border-side: (
 	start: left
 );
 
-@each $color, $value in $all-colors {
-	.border-#{$color} {
-		border-color: $value !important;
-	}
+// reason: beats Bootstrap's !important border-color utility (`.border-*`)
+// so state and theme variants win over it on the same element (CLAUDE.md).
+@include generate-variants($name: border, $values: $all-colors, $important: true, $skip-base: true) using ($value, $key, $important, $theme) {
+	border-color: $value !important;
+}
 
-	@each $side, $type in $border-side {
-		.border-#{$side}-#{$color} {
-			border-#{$type}-color: $value !important;
-		}
-	}
-
-	@each $state, $pseudo in $states {
-		.#{$state}\:border-#{$color}#{$pseudo} {
-			border-color: $value !important;
-		}
-
-		@each $side, $type in $border-side {
-			.#{$state}\:border-#{$side}-#{$color}#{$pseudo} {
-				border-#{$type}-color: $value !important;
-			}
-		}
-	}
-
-	@include theme(light) {
-		[class*="light:border-#{$color}"] {
-			border-color: $value !important;
-		}
-
-		@each $side, $type in $border-side {
-			[class*="light:border-#{$side}-#{$color}"] {
-				border-#{$type}-color: $value !important;
-			}
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="light:#{$state}:border-#{$color}"]#{$pseudo} {
-				border-color: $value !important;
-			}
-
-			@each $side, $type in $border-side {
-				[class*="light:#{$state}:border-#{$side}-#{$color}"]#{$pseudo} {
-					border-#{$type}-color: $value !important;
-				}
-			}
-		}
-	}
-
-	@include theme(dark) {
-		[class*="dark:border-#{$color}"] {
-			border-color: $value !important;
-		}
-
-		@each $side, $type in $border-side {
-			[class*="dark:border-#{$side}-#{$color}"] {
-				border-#{$type}-color: $value !important;
-			}
-		}
-
-		@each $state, $pseudo in $states {
-			[class*="dark:#{$state}:border-#{$color}"]#{$pseudo} {
-				border-color: $value !important;
-			}
-
-			@each $side, $type in $border-side {
-				[class*="dark:#{$state}:border-#{$side}-#{$color}"]#{$pseudo} {
-					border-#{$type}-color: $value !important;
-				}
-			}
-		}
+@each $side, $type in $border-side {
+	// reason: `.border-#{$side}-*` is not emitted by Bootstrap's utility API,
+	// but stays !important for parity with the all-sides `.border-*` above
+	// so its state and theme variants win the same way (CLAUDE.md).
+	@include generate-variants($name: border-#{$side}, $values: $all-colors, $important: true) using ($value, $key, $important, $theme) {
+		border-#{$type}-color: $value !important;
 	}
 }
