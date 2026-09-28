@@ -25,28 +25,35 @@ function getFilesFromDir(dir, extensionsConfig = []) {
 		.map((file) => path.join(dir, file.name));
 }
 
-export default defineConfig({
-	resolve: {
-		alias: {
-			'@bootstrap': path.resolve(import.meta.dirname, 'node_modules/bootstrap/'),
-		},
-	},
-	build: {
-		cssTarget: ['chrome87', 'edge88', 'firefox78', 'safari14'],
-		rolldownOptions: {
-			input: [
-				...getFilesFromDir(path.resolve(import.meta.dirname, 'src/styles'), [
-					{extension: '.scss', exceptions: [/^_/]},
-				])
-			],
-			output: {
-				entryFileNames: '[name].js',
-				chunkFileNames: '[name].js',
-				assetFileNames: '[name][extname]',
+// `vite build --mode site` (npm run build:site) also builds the index.html demo
+// into dist-site/ for Vercel; the default build keeps dist/ to bootstrap.css only.
+export default defineConfig(({mode}) => {
+	const isSite = mode === 'site';
+
+	return {
+		resolve: {
+			alias: {
+				'@bootstrap': path.resolve(import.meta.dirname, 'node_modules/bootstrap/'),
 			},
 		},
-		outDir: 'dist',
-		assetsDir: '.',
-		emptyOutDir: true,
-	}
+		build: {
+			cssTarget: ['chrome87', 'edge88', 'firefox78', 'safari14'],
+			rolldownOptions: {
+				input: [
+					...getFilesFromDir(path.resolve(import.meta.dirname, 'src/styles'), [
+						{extension: '.scss', exceptions: [/^_/]},
+					]),
+					...(isSite ? [path.resolve(import.meta.dirname, 'index.html')] : []),
+				],
+				output: {
+					entryFileNames: '[name].js',
+					chunkFileNames: '[name].js',
+					assetFileNames: '[name][extname]',
+				},
+			},
+			outDir: isSite ? 'dist-site' : 'dist',
+			assetsDir: '.',
+			emptyOutDir: true,
+		}
+	};
 });
